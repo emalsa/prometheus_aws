@@ -12,7 +12,7 @@ for filename_json in ../processing/url/*.json; do
   #  echo "$filename_json"
   url=$(jq .url -r "$filename_json")
   filename_output="$(date +%s)_$(jq .type -r "$filename_json")_$(jq .check_id -r "$filename_json")_$(jq .check_item_id -r "$filename_json").txt"
-  echo $filename_json
+#  echo $filename_json
   #  echo "$url"
   #  url="https://bing.com"
   /usr/bin/curl -w "@curl-format.txt" --request GET --compressed -Lvs -o /dev/null ${url} >../processed/url/$filename_output 2>&1
