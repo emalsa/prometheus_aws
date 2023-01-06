@@ -4,6 +4,8 @@ class ReceiveController extends BaseController {
 
   protected stdClass $postData;
 
+  protected string $type;
+
   /**
    * Receive the request and creates the json file to process.
    */
@@ -20,8 +22,9 @@ class ReceiveController extends BaseController {
 
     }
     $filenameJson = $this->getFilename();
+    $this->type = 'url'; // make dynamic when we check others than url
     try {
-      if (file_put_contents("./processing/$filenameJson", json_encode($this->postData, JSON_PRETTY_PRINT))) {
+      if (file_put_contents("./processing/{$this->type}/$filenameJson", json_encode($this->postData, JSON_PRETTY_PRINT))) {
         echo 'Ok';
         return;
       }
@@ -45,7 +48,7 @@ class ReceiveController extends BaseController {
    * The filename.
    */
   protected function getFilename(): string {
-    return $this->postData->type . '_' . $this->postData->check_id . '_' . $this->postData->check_item_id . '.json';
+    return time() . '_' . $this->postData->type . '_' . $this->postData->check_id . '_' . $this->postData->check_item_id . '.json';
   }
 
   /**
