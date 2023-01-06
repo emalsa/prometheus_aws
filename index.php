@@ -1,2 +1,2 @@
 <?php
-echo 'text';
+echo 'wow';
