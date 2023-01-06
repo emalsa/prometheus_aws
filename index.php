@@ -20,6 +20,3 @@ if ($method == 'PUT') {
 if ($method == 'DELETE') {
   echo "THIS IS A DELETE REQUEST";
 }
-
-
-?>
