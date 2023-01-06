@@ -19,7 +19,6 @@ class ReceiveController extends BaseController {
     if (!$this->validateData()) {
 
     }
-
     $filenameJson = $this->getFilename();
     try {
       if (file_put_contents("./processing/$filenameJson", json_encode($this->postData, JSON_PRETTY_PRINT))) {
