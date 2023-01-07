@@ -2,6 +2,7 @@
 
 counter=0
 maxfiles=10
+echo "Hello"
 for filename_json in ../processing/url/*.json; do
   [ -e "$filename_json" ] || continue
 
