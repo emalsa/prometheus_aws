@@ -2,21 +2,19 @@
 header("Access-Control-Allow-Origin: *");
 require __DIR__ . "/inc/bootstrap.php";
 
-// get request method
-$method = $_SERVER['REQUEST_METHOD'];
-if ($method == 'GET') {
-  echo "THIS IS A GET REQUEST";
-  $a = 1;
-}
-if ($method == 'POST') {
-  echo "THIS IS A POST REQUEST";
+// Get request method
+$method = $_SERVER['REQUEST_METHOD'] ?? NULL;
+if ($method === 'POST') {
+  echo "THIS IS A POST REQUEST\n";
   $receive = new ReceiveController();
   $receive->init();
   return;
 }
-if ($method == 'PUT') {
-  echo "THIS IS A PUT REQUEST";
+// Process
+$send = $argv[1] === 'aws-exec' ?? NULL;
+if ($send) {
+  $send = new SendController();
+  $send->send();
+  return;
 }
-if ($method == 'DELETE') {
-  echo "THIS IS A DELETE REQUEST";
-}
+echo "NO!!!\n";
