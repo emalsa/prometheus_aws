@@ -14,3 +14,6 @@ for filename_json in /var/www/html/processing/url/*.json; do
   /usr/bin/curl -w "@/var/www/html/curl/curl-format.txt" --request GET --compressed -Lvs -o /dev/null ${url} >/var/www/html/processed/url/$filename_output 2>&1
   mv $filename_json /var/www/html/processing/url/done/
 done
+
+# Process files
+/usr/bin/php /var/www/html/index.php aws-exec
