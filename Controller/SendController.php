@@ -2,11 +2,11 @@
 
 class SendController {
 
-  public const MAX_FILES = 5;
+  public const MAX_FILES = 10;
 
   public const URL = 'https://prometheus.nicastro.io/api/check_item/update';
 
-  //  public const URL = 'https://c348bb49-5218-4de9-ba34-732f9a0f2106.mock.pstmn.io';
+  // public const URL = 'https://c348bb49-5218-4de9-ba34-732f9a0f2106.mock.pstmn.io';
 
   protected string $type;
 
@@ -19,11 +19,11 @@ class SendController {
   protected string $filePath;
 
   /**
-   * Sends the request.
+   * Sends the processed data to Prometheus.
    */
   public function send(): void {
     try {
-      $this->filePath = './processed/url';
+      $this->filePath = '/var/www/html/processed/url';
       $filenames = array_diff(scandir($this->filePath), ['.', '..']);
       if (empty($filenames)) {
         print_r('No files');
@@ -47,6 +47,7 @@ class SendController {
         $resp = $this->dispatch();
         if (!$this->validateResponse($resp)) {
           print_r('Response bad.');
+          return;
         }
         if (!$this->moveFile($filename)) {
           print_r('File could not be moved.');
@@ -67,7 +68,7 @@ class SendController {
    * Dispatch POST request.
    *
    * @return string
-   * The response.
+   *   The response.
    */
   protected function dispatch(): string {
     $curl = curl_init();
@@ -92,7 +93,7 @@ class SendController {
    * Builds the POST data.
    *
    * @return array
-   * The POST data as array
+   *   The POST data as array.
    */
   protected function buildResponseData(): array {
     return [
@@ -101,7 +102,6 @@ class SendController {
       'type' => $this->type,
       'cloud_url' => gethostname(),
       'response' => base64_encode($this->fileContent),
-
     ];
   }
 
@@ -109,17 +109,23 @@ class SendController {
    * Explodes the filename in parts.
    *
    * @param $filename
-   * The filename
+   *   The filename.
    */
   protected function getFilenamePart(string $filename): void {
     $filename_parts = explode('_', $filename);
-
     $this->type = $filename_parts[1];
     $this->checkId = $filename_parts[2];
     $this->checkItemId = str_replace('.txt', '', $filename_parts[3]);
-
   }
 
+  /**
+   * Moves the filename to the done directory.
+   *
+   * @param  string  $filename
+   *   The filename.
+   *
+   * @return bool
+   */
   protected function moveFile(string $filename): bool {
     return rename("$this->filePath/$filename", "$this->filePath/done/$filename");
   }
