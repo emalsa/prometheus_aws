@@ -3,7 +3,7 @@
 counter=0
 maxfiles=10
 echo "Hello 1"
-for filename_json in ../processing/url/*.json; do
+for filename_json in /var/www/html/processing/url/*.json; do
   [ -e "$filename_json" ] || continue
 
   if [[ $counter -gt $maxfiles ]]; then
@@ -18,7 +18,7 @@ for filename_json in ../processing/url/*.json; do
   #  echo $filename_json
   #  echo "$url"
   #  url="https://bing.com"
-  /usr/bin/curl --request GET --compressed -Lvs -o /dev/null https://prometheus.nicastro.io/cron_test >../processed/url/$filename_output 2>&1
+  /usr/bin/curl --request GET --compressed -Lvs -o /dev/null https://prometheus.nicastro.io/cron_test >/var/www/html/processed/url/$filename_output 2>&1
   echo "Hello 4"
   #mv $filename_json ../processing/url/done/
   #echo $test > a.txt 2>&1
